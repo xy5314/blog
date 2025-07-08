@@ -50,7 +50,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Debug site availability
-        run: curl -v http://silence.5277277.xyz
+        run: curl -v https://silence.5277277.xyz
 
       - name: Get the content of docsearch.json as config
         id: algolia_config
