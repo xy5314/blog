@@ -20,8 +20,8 @@ export default function Home() {
 
         <div className="relative">
           <div className="mx-auto max-w-7xl bg-background lg:px-8">
-            <BlogSection />
-            <ProjectSection />
+            {/*<BlogSection />*/}
+            {/*<ProjectSection />*/}
             <FeaturesSection />
           </div>
           <div

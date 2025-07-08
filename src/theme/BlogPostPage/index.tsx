@@ -44,7 +44,7 @@ function BlogPostPageContent({
           <BlogPostPaginator nextItem={nextItem} prevItem={prevItem} />
         </div>
       )}
-      {!hideComment && <Comment />}
+      {/*{!hideComment && <Comment />}*/}
       <BackToTopButton />
     </BlogLayout>
   )

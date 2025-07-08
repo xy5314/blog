@@ -2,15 +2,15 @@
   "name": "blog",
   "version": "3.0.0",
   "author": {
-    "url": "https://github.com/kuizuo",
-    "email": "hi@kuizuo.cn",
-    "name": "愧怍"
+    "url": "https://gitee.com/qixiangyang",
+    "email": "qxy5314@163.com",
+    "name": "Silence"
   },
   "repository": {
-    "url": "https://github.com/kuizuo/blog",
+    "url": "https://gitee.com/qixiangyang",
     "type": "git"
   },
-  "homepage": "https://kuizuo.cn",
+  "homepage": "https://silence.7xy.fun",
   "license": "MIT",
   "scripts": {
     "docusaurus": "docusaurus",
@@ -29,12 +29,12 @@
     "index": "docker run -it --env-file=.env -e \"CONFIG=$(cat docsearch.json | jq -r tostring)\" algolia/docsearch-scraper"
   },
   "dependencies": {
-    "@docusaurus/core": "3.6.1",
-    "@docusaurus/plugin-ideal-image": "3.6.1",
-    "@docusaurus/plugin-pwa": "3.6.1",
-    "@docusaurus/plugin-vercel-analytics": "^3.6.1",
-    "@docusaurus/preset-classic": "3.6.1",
-    "@docusaurus/theme-search-algolia": "3.6.1",
+    "@docusaurus/core": "3.6.3",
+    "@docusaurus/plugin-ideal-image": "3.6.3",
+    "@docusaurus/plugin-pwa": "3.6.3",
+    "@docusaurus/plugin-vercel-analytics": "^3.6.3",
+    "@docusaurus/preset-classic": "3.6.3",
+    "@docusaurus/theme-search-algolia": "3.6.3",
     "@giscus/react": "^3.0.0",
     "@popperjs/core": "^2.11.8",
     "@radix-ui/react-slot": "^1.1.0",
@@ -59,9 +59,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@docusaurus/module-type-aliases": "3.6.1",
-    "@docusaurus/tsconfig": "^3.6.1",
-    "@docusaurus/types": "3.6.1",
+    "@docusaurus/module-type-aliases": "3.6.3",
+    "@docusaurus/tsconfig": "^3.6.3",
+    "@docusaurus/types": "3.6.3",
     "@iconify/react": "^5.0.1",
     "@tailwindcss/typography": "^0.5.13",
     "typescript": "~5.5.2"
