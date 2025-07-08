@@ -97,10 +97,12 @@ const config: Config = {
             ]
         },
         algolia: {
-            appId: 'DL907034HV',
-            // search key
-            apiKey: 'fb929240fa507e59ebf0318d5833723f',
-            indexName: 'develop',
+            // Application ID
+            appId: '3T23HDN986',
+            // Search API Key
+            apiKey: 'f7e37a68b11d2b8916a78d0d6ecb1bd0',
+            // index Name
+            indexName: 'Silence',
         },
         prism: {
             theme: themes.oneLight,
