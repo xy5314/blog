@@ -60,15 +60,15 @@ const config: Config = {
                 // {label: '项目', position: 'right', to: 'project'},
                 // {label: '友链', position: 'right', to: 'friends'},
                 {label: '关于', position: 'right', to: 'about'},
-                // {
-                //     label: '更多',
-                //     position: 'right',
-                //     items: [
-                //         {label: '归档', to: 'blog/archive'},
-                //         {label: '笔记', to: 'docs/skill'},
-                //         {label: '工具推荐', to: 'docs/tools'},
-                //     ],
-                // },
+                {
+                    label: '更多',
+                    position: 'right',
+                    items: [
+                        {label: '归档', to: 'blog/archive'},
+                        // {label: '笔记', to: 'docs/skill'},
+                        // {label: '工具推荐', to: 'docs/tools'},
+                    ],
+                },
                 {
                     type: 'localeDropdown',
                     position: 'right',
