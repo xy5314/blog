@@ -1,9 +1,15 @@
 name: docsearch
 
-on: deployment
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
 
 jobs:
   algolia:
+    # 确保只在第一个 workflow 成功时运行
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,9 +20,7 @@ jobs:
 
       - name: Run algolia/docsearch-scraper image
         env:
-          #  这个是 Application ID
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
-          #  这个是 Admin API Key
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
           CONFIG: ${{ steps.algolia_config.outputs.config }}
         run: |

@@ -42,3 +42,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: 'root'
           TARGET: '/usr/local/dockers/nginx/html/mdtest/'
+      - name: Create deployment
+        uses: actions/deploy@v1
+        with:
+          environment: 'production'
