@@ -33,9 +33,6 @@ jobs:
       - name: Build
         run: nr build
 
-      - name: Lint
-        run: nr lint
-
       - name: SSH Deploy
         uses: easingthemes/ssh-deploy@v4.1.10
         env:
@@ -44,4 +41,4 @@ jobs:
           SOURCE: 'build'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: 'root'
-          TARGET: '/opt/1panel/apps/openresty/openresty/www/sites/kuizuo.cn/index'
+          TARGET: '/usr/local/dockers/nginx/html/mdtest'
