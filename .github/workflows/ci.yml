@@ -38,7 +38,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: '-avzr --delete'
-          SOURCE: 'mdtest'
+          SOURCE: 'build/'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: 'root'
-          TARGET: '/usr/local/dockers/nginx/html'
+          TARGET: '/usr/local/dockers/nginx/html/mdtest/'
