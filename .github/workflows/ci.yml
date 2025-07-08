@@ -49,11 +49,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Wait for deployment to complete
-        run: sleep 20
-
       - name: Debug site availability
-        run: curl -v https://silence.5277277.xyz
+        run: curl -v http://silence.5277277.xyz
 
       - name: Get the content of docsearch.json as config
         id: algolia_config
