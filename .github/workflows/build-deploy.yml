@@ -44,48 +44,24 @@ jobs:
 
       - name: Sending Feishu Message
         if: always()  # 修正：将 if 条件移到步骤级别
-        uses: xavier/feishu-message-action@v1
+        uses: foxundermoon/feishu-action@v2
         with:
-          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          type: post
-          message: |
-            {
-              "post": {
-                "zh_cn": {
-                  "title": "博客项目部署结果",
-                  "content": [
-                    [
-                      {
-                        "tag": "text",
-                        "text": "**状态**: ${{ job.status }}\n"
-                      }
-                    ],
-                    [
-                      {
-                        "tag": "text",
-                        "text": "**仓库**: ${{ github.repository }}\n"
-                      }
-                    ],
-                    [
-                      {
-                        "tag": "text",
-                        "text": "**分支**: ${{ github.ref }}\n"
-                      }
-                    ],
-                    [
-                      {
-                        "tag": "text",
-                        "text": "**触发者**: ${{ github.actor }}\n\n"
-                      }
-                    ],
-                    [
-                      {
-                        "tag": "a",
-                        "text": "查看详情",
-                        "href": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                      }
-                    ]
-                  ]
-                }
-              }
-            }  
+          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              zh_cn:
+                title: "博客项目部署 - ${{ job.status }}"
+                content:
+                - - tag: text
+                    un_escape: true
+                    text: "**状态**: ${{ job.status }}\n"
+                - - tag: text
+                    text: "**仓库**: ${{ github.repository }}\n"
+                - - tag: text
+                    text: "**分支**: ${{ github.ref }}\n"
+                - - tag: text
+                    text: "**触发者**: ${{ github.actor }}\n\n"
+                - - tag: a
+                    text: "查看详情"
+                    href: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
