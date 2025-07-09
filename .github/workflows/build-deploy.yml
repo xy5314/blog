@@ -1,0 +1,132 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node: [20]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set node version to ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - run: corepack enable
+
+      - name: Setup
+        run: npm i -g @antfu/ni
+
+      - name: Install
+        run: nci
+
+      - name: Build
+        run: nr build
+
+      - name: SSH Deploy
+        uses: easingthemes/ssh-deploy@v4.1.10
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: '-avzr --delete'
+          SOURCE: 'build/'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: 'root'
+          TARGET: '/usr/local/dockers/nginx/html/mdtest/'
+
+      - name: Create deployment artifact
+        if: success()
+        run: echo "Build and deploy successful at $(date)" > deploy_success.txt
+
+      - name: Upload deployment artifact
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: deploy-success
+          path: deploy_success.txt
+
+      - name: Notify Feishu on Success
+        if: success()
+        uses: yanglbme/feishu-action@main
+        with:
+          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          msg_type: interactive
+          content: |
+            {
+              "header": {
+                "title": {
+                  "content": "✅ 构建部署成功",
+                  "tag": "plain_text"
+                }
+              },
+              "elements": [
+                {
+                  "tag": "div",
+                  "text": {
+                    "content": "**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}",
+                    "tag": "lark_md"
+                  }
+                },
+                {
+                  "tag": "action",
+                  "actions": [
+                    {
+                      "tag": "button",
+                      "text": {
+                        "content": "查看详情",
+                        "tag": "plain_text"
+                      },
+                      "type": "primary",
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }
+
+      - name: Notify Feishu on Failure
+        if: failure()
+        uses: yanglbme/feishu-action@main
+        with:
+          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          msg_type: interactive
+          content: |
+            {
+              "header": {
+                "title": {
+                  "content": "❌ 构建部署失败",
+                  "tag": "plain_text"
+                }
+              },
+              "elements": [
+                {
+                  "tag": "div",
+                  "text": {
+                    "content": "**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}",
+                    "tag": "lark_md"
+                  }
+                },
+                {
+                  "tag": "action",
+                  "actions": [
+                    {
+                      "tag": "button",
+                      "text": {
+                        "content": "查看详情",
+                        "tag": "plain_text"
+                      },
+                      "type": "danger",
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }

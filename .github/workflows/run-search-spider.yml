@@ -1,0 +1,105 @@
+name: Run Search Spider
+
+on:
+  workflow_run:
+    workflows: ["Build and Deploy"]
+    types:
+      - completed
+
+jobs:
+  run-spider:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download deployment artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: deploy-success
+
+      - name: Run Search Spider on remote server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker run --rm --env-file=/app/algolia/.env -e "CONFIG=$(python3 -c 'import json,sys; print(json.dumps(json.load(sys.stdin)))' < /app/algolia/docsearch.json)" algolia/docsearch-scraper
+
+      - name: Notify Feishu on Success
+        if: success()
+        uses: yanglbme/feishu-action@main
+        with:
+          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          msg_type: interactive
+          content: |
+            {
+              "header": {
+                "title": {
+                  "content": "✅ 搜索爬虫执行成功",
+                  "tag": "plain_text"
+                }
+              },
+              "elements": [
+                {
+                  "tag": "div",
+                  "text": {
+                    "content": "**仓库**: ${{ github.repository }}\n**触发工作流**: ${{ github.event.workflow_run.name }}\n**触发者**: ${{ github.event.workflow_run.actor.login }}",
+                    "tag": "lark_md"
+                  }
+                },
+                {
+                  "tag": "action",
+                  "actions": [
+                    {
+                      "tag": "button",
+                      "text": {
+                        "content": "查看详情",
+                        "tag": "plain_text"
+                      },
+                      "type": "primary",
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }
+
+      - name: Notify Feishu on Failure
+        if: failure()
+        uses: yanglbme/feishu-action@main
+        with:
+          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          msg_type: interactive
+          content: |
+            {
+              "header": {
+                "title": {
+                  "content": "❌ 搜索爬虫执行失败",
+                  "tag": "plain_text"
+                }
+              },
+              "elements": [
+                {
+                  "tag": "div",
+                  "text": {
+                    "content": "**仓库**: ${{ github.repository }}\n**触发工作流**: ${{ github.event.workflow_run.name }}\n**触发者**: ${{ github.event.workflow_run.actor.login }}",
+                    "tag": "lark_md"
+                  }
+                },
+                {
+                  "tag": "action",
+                  "actions": [
+                    {
+                      "tag": "button",
+                      "text": {
+                        "content": "查看详情",
+                        "tag": "plain_text"
+                      },
+                      "type": "danger",
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }
