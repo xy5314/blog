@@ -48,85 +48,19 @@ jobs:
 
       - name: Upload deployment artifact
         if: success()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deploy-success
           path: deploy_success.txt
 
-      - name: Notify Feishu on Success
-        if: success()
-        uses: yanglbme/feishu-action@main
+      - name: Send Feishu Notification
+        uses: burnett01/send-to-feishu-webhook@v1.0.0
         with:
-          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          msg_type: interactive
+          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          title: "Build and Deploy - ${{ job.status }}"
           content: |
             {
-              "header": {
-                "title": {
-                  "content": "✅ 构建部署成功",
-                  "tag": "plain_text"
-                }
-              },
-              "elements": [
-                {
-                  "tag": "div",
-                  "text": {
-                    "content": "**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}",
-                    "tag": "lark_md"
-                  }
-                },
-                {
-                  "tag": "action",
-                  "actions": [
-                    {
-                      "tag": "button",
-                      "text": {
-                        "content": "查看详情",
-                        "tag": "plain_text"
-                      },
-                      "type": "primary",
-                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                    }
-                  ]
-                }
-              ]
+              "tag": "markdown",
+              "content": "**状态**: ${{ job.status }}\n**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}\n\n[查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
             }
-
-      - name: Notify Feishu on Failure
-        if: failure()
-        uses: yanglbme/feishu-action@main
-        with:
-          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          msg_type: interactive
-          content: |
-            {
-              "header": {
-                "title": {
-                  "content": "❌ 构建部署失败",
-                  "tag": "plain_text"
-                }
-              },
-              "elements": [
-                {
-                  "tag": "div",
-                  "text": {
-                    "content": "**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}",
-                    "tag": "lark_md"
-                  }
-                },
-                {
-                  "tag": "action",
-                  "actions": [
-                    {
-                      "tag": "button",
-                      "text": {
-                        "content": "查看详情",
-                        "tag": "plain_text"
-                      },
-                      "type": "danger",
-                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                    }
-                  ]
-                }
-              ]
-            }
+        if: always()
