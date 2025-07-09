@@ -42,11 +42,13 @@ jobs:
           REMOTE_USER: 'root'
           TARGET: '/usr/local/dockers/nginx/html/mdtest/'
 
-      - name: Send Feishu Notification
-        uses: junka/feishu-bot-webhook-action@main
-        with:
-          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          message: |
+      - name: Sending Feishu Message
+        uses: x-actions/feishu@main
+        env:
+          FEISHU_CUSTOMERBOT_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          MSGTYPE: interactive
+          TITLE: "x-actions feishu message"
+          CONTENT: |
             {
               "msg_type": "post",
               "content": {
