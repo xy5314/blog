@@ -8,16 +8,24 @@ on:
 jobs:
   algolia:
     runs-on: ubuntu-latest
+    needs: build-and-deploy   # 👈 依赖前面的任务执行完成
+
     steps:
       - uses: actions/checkout@v2
 
+      - name: Debug site availability
+        run: curl -v https://silence.5277277.xyz
+
       - name: Get the content of docsearch.json as config
         id: algolia_config
-        run: echo "::set-output name=config::$(cat docsearch.json | jq -r tostring)"
+        run: |
+          echo "config=$(python3 -c 'import json,sys; print(json.dumps(json.load(sys.stdin)))' < docsearch.json)" >> $GITHUB_OUTPUT
 
       - name: Run algolia/docsearch-scraper image
         env:
+          #  这个是 Application ID
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          #  这个是 Admin API Key
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
           CONFIG: ${{ steps.algolia_config.outputs.config }}
         run: |
@@ -26,3 +34,4 @@ jobs:
             --env API_KEY=${ALGOLIA_API_KEY} \
             --env "CONFIG=${CONFIG}" \
             algolia/docsearch-scraper
+
