@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build & Deploy
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
         run: nr build
 
       - name: SSH Deploy
-        uses: easingthemes/ssh-deploy@v4.1.10
+        uses: easingthemes/ssh-deploy@v2.1.6  # 使用存在的版本
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: '-avzr --delete'
@@ -54,13 +54,18 @@ jobs:
           path: deploy_success.txt
 
       - name: Send Feishu Notification
-        uses: burnett01/send-to-feishu-webhook@v1.0.0
+        uses: feishu-bot/interactive@v1  # 使用官方推荐的飞书 Action
         with:
-          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          title: "Build and Deploy - ${{ job.status }}"
+          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          title: "构建部署 - ${{ job.status }}"
           content: |
-            {
-              "tag": "markdown",
-              "content": "**状态**: ${{ job.status }}\n**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}\n\n[查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-            }
+            [
+              {
+                "tag": "div",
+                "text": {
+                  "tag": "lark_md",
+                  "content": "**状态**: ${{ job.status }}\n**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}\n\n[查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+                }
+              }
+            ]
         if: always()

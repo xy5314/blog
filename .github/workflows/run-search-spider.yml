@@ -2,7 +2,7 @@ name: Run Search Spider
 
 on:
   workflow_run:
-    workflows: ["Build and Deploy"]
+    workflows: ["Build & Deploy"]
     types:
       - completed
 
@@ -16,9 +16,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: deploy-success
+          path: .
 
       - name: Run Search Spider on remote server
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v0.1.14  # 使用最新稳定版本
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: root
@@ -27,13 +28,18 @@ jobs:
             docker run --rm --env-file=/app/algolia/.env -e "CONFIG=$(python3 -c 'import json,sys; print(json.dumps(json.load(sys.stdin)))' < /app/algolia/docsearch.json)" algolia/docsearch-scraper
 
       - name: Send Feishu Notification
-        uses: burnett01/send-to-feishu-webhook@v1.0.0
+        uses: feishu-bot/interactive@v1
         with:
-          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          title: "Search Spider - ${{ job.status }}"
+          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          title: "搜索爬虫 - ${{ job.status }}"
           content: |
-            {
-              "tag": "markdown",
-              "content": "**状态**: ${{ job.status }}\n**仓库**: ${{ github.repository }}\n**触发工作流**: ${{ github.event.workflow_run.name }}\n**触发者**: ${{ github.event.workflow_run.actor.login }}\n\n[查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-            }
+            [
+              {
+                "tag": "div",
+                "text": {
+                  "tag": "lark_md",
+                  "content": "**状态**: ${{ job.status }}\n**仓库**: ${{ github.repository }}\n**触发工作流**: ${{ github.event.workflow_run.name }}\n**触发者**: ${{ github.event.workflow_run.actor.login }}\n\n[查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+                }
+              }
+            ]
         if: always()
