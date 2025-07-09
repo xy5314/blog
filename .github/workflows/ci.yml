@@ -42,3 +42,12 @@ jobs:
           REMOTE_USER: 'root'
           TARGET: '/usr/local/dockers/nginx/html/mdtest/'
 
+      - name: Run Search Spider on remote server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker run -it --rm --env-file=/app/algolia/.env -e "CONFIG=$(python3 -c 'import json,sys; print(json.dumps(json.load(sys.stdin)))' < /app/algolia/docsearch.json)" algolia/docsearch-scraper
+
