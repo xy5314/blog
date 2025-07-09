@@ -13,9 +13,9 @@ import TOC from '@theme/TOC'
 import { type ReactNode } from 'react'
 
 function BlogPostPageContent({
-  sidebar,
-  children,
-}: {
+                               sidebar,
+                               children,
+                             }: {
   sidebar: BlogSidebar
   children: ReactNode
 }): JSX.Element {
@@ -29,37 +29,39 @@ function BlogPostPageContent({
   } = frontMatter
 
   return (
-    <BlogLayout
-      sidebar={sidebar}
-      toc={
-        !hideTableOfContents && toc.length > 0 ? (
-          <TOC toc={toc} minHeadingLevel={tocMinHeadingLevel} maxHeadingLevel={tocMaxHeadingLevel} />
-        ) : undefined
-      }
-    >
-      <BlogPostItem>{children}</BlogPostItem>
+      <BlogLayout
+          sidebar={sidebar}
+          toc={
+            !hideTableOfContents && toc.length > 0
+                ? (
+                    <TOC toc={toc} minHeadingLevel={tocMinHeadingLevel} maxHeadingLevel={tocMaxHeadingLevel} />
+                )
+                : undefined
+          }
+      >
+        <BlogPostItem>{children}</BlogPostItem>
 
-      {(nextItem || prevItem) && (
-        <div className="margin-bottom--md">
-          <BlogPostPaginator nextItem={nextItem} prevItem={prevItem} />
-        </div>
-      )}
-      {/*{!hideComment && <Comment />}*/}
-      <BackToTopButton />
-    </BlogLayout>
+        {(nextItem || prevItem) && (
+            <div className="margin-bottom--md">
+              <BlogPostPaginator nextItem={nextItem} prevItem={prevItem} />
+            </div>
+        )}
+        {!hideComment && <Comment />}
+        <BackToTopButton />
+      </BlogLayout>
   )
 }
 
 export default function BlogPostPage(props: Props): JSX.Element {
   const BlogPostContent = props.content
   return (
-    <BlogPostProvider content={props.content} isBlogPostPage>
-      <HtmlClassNameProvider className={cn(ThemeClassNames.wrapper.blogPages, ThemeClassNames.page.blogPostPage)}>
-        <BlogPostPageMetadata />
-        <BlogPostPageContent sidebar={props.sidebar}>
-          <BlogPostContent />
-        </BlogPostPageContent>
-      </HtmlClassNameProvider>
-    </BlogPostProvider>
+      <BlogPostProvider content={props.content} isBlogPostPage>
+        <HtmlClassNameProvider className={cn(ThemeClassNames.wrapper.blogPages, ThemeClassNames.page.blogPostPage)}>
+          <BlogPostPageMetadata />
+          <BlogPostPageContent sidebar={props.sidebar}>
+            <BlogPostContent />
+          </BlogPostPageContent>
+        </HtmlClassNameProvider>
+      </BlogPostProvider>
   )
 }

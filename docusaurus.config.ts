@@ -2,6 +2,7 @@ import type * as Preset from '@docusaurus/preset-classic'
 import type { Config } from '@docusaurus/types'
 import { themes } from 'prism-react-renderer'
 import social from './data/social'
+import {GiscusConfig} from "@site/src/components/Comment";
 
 
 const config: Config = {
@@ -121,14 +122,14 @@ const config: Config = {
                 },
             ],
         },
-        // giscus: {
-        //   repo: 'kuizuo/blog',
-        //   repoId: 'MDEwOlJlcG9zaXRvcnkzOTc2MjU2MTI=',
-        //   category: 'General',
-        //   categoryId: 'DIC_kwDOF7NJDM4CPK95',
-        //   theme: 'light',
-        //   darkTheme: 'dark_dimmed',
-        // } satisfies Partial<GiscusConfig>,
+        giscus: {
+          repo: 'xy5314/blog',
+          repoId: 'R_kgDOPIuxDg',
+          category: 'General',
+          categoryId: 'DIC_kwDOPIuxDs4CstN8',
+          theme: 'light',
+          darkTheme: 'dark',
+        } satisfies Partial<GiscusConfig>,
         tableOfContents: {
             minHeadingLevel: 2,
             maxHeadingLevel: 4,
