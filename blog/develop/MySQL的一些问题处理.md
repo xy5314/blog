@@ -1,5 +1,5 @@
 ---
-slug: mysql- problems
+slug: mysql-problems
 title: mysql的问题归纳
 date: 2025-06-08
 authors: silence
