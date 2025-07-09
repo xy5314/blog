@@ -19,7 +19,7 @@ jobs:
           path: .
 
       - name: Run Search Spider on remote server
-        uses: appleboy/ssh-action@v0.1.14  # 使用最新稳定版本
+        uses: appleboy/ssh-action@v0.1.14
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: root
@@ -28,18 +28,15 @@ jobs:
             docker run --rm --env-file=/app/algolia/.env -e "CONFIG=$(python3 -c 'import json,sys; print(json.dumps(json.load(sys.stdin)))' < /app/algolia/docsearch.json)" algolia/docsearch-scraper
 
       - name: Send Feishu Notification
-        uses: feishu-bot/interactive@v1
+        uses: yanglbme/feishu-notify@v3.1.0  # 使用确切版本号
         with:
-          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
           title: "搜索爬虫 - ${{ job.status }}"
           content: |
-            [
-              {
-                "tag": "div",
-                "text": {
-                  "tag": "lark_md",
-                  "content": "**状态**: ${{ job.status }}\n**仓库**: ${{ github.repository }}\n**触发工作流**: ${{ github.event.workflow_run.name }}\n**触发者**: ${{ github.event.workflow_run.actor.login }}\n\n[查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-                }
-              }
-            ]
+            **状态**: ${{ job.status }}
+            **仓库**: ${{ github.repository }}
+            **触发工作流**: ${{ github.event.workflow_run.name }}
+            **触发者**: ${{ github.event.workflow_run.actor.login }}
+            
+            [查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
         if: always()

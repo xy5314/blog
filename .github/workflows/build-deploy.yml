@@ -33,7 +33,7 @@ jobs:
         run: nr build
 
       - name: SSH Deploy
-        uses: easingthemes/ssh-deploy@v2.1.6  # 使用存在的版本
+        uses: easingthemes/ssh-deploy@v2.1.6
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: '-avzr --delete'
@@ -54,18 +54,15 @@ jobs:
           path: deploy_success.txt
 
       - name: Send Feishu Notification
-        uses: feishu-bot/interactive@v1  # 使用官方推荐的飞书 Action
+        uses: yanglbme/feishu-notify@v3.1.0  # 使用确切版本号
         with:
-          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
           title: "构建部署 - ${{ job.status }}"
           content: |
-            [
-              {
-                "tag": "div",
-                "text": {
-                  "tag": "lark_md",
-                  "content": "**状态**: ${{ job.status }}\n**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}\n\n[查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
-                }
-              }
-            ]
+            **状态**: ${{ job.status }}
+            **仓库**: ${{ github.repository }}
+            **分支**: ${{ github.ref }}
+            **触发者**: ${{ github.actor }}
+            
+            [查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
         if: always()
