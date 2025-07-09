@@ -1,42 +1,75 @@
-name: Run Search Spider
+name: Build & Deploy
 
 on:
-  workflow_run:
-    workflows: ["Build & Deploy"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 jobs:
-  run-spider:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  build-and-deploy:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Download deployment artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: deploy-success
-          path: .
+    strategy:
+      matrix:
+        node: [20]
 
-      - name: Run Search Spider on remote server
-        uses: appleboy/ssh-action@v0.1.14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set node version to ${{ matrix.node }}
+        uses: actions/setup-node@v4
         with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker run --rm --env-file=/app/algolia/.env -e "CONFIG=$(python3 -c 'import json,sys; print(json.dumps(json.load(sys.stdin)))' < /app/algolia/docsearch.json)" algolia/docsearch-scraper
+          node-version: ${{ matrix.node }}
+
+      - run: corepack enable
+
+      - name: Setup
+        run: npm i -g @antfu/ni
+
+      - name: Install
+        run: nci
+
+      - name: Build
+        run: nr build
+
+      - name: SSH Deploy
+        uses: easingthemes/ssh-deploy@v2.1.6
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: '-avzr --delete'
+          SOURCE: 'build/'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: 'root'
+          TARGET: '/usr/local/dockers/nginx/html/mdtest/'
 
       - name: Send Feishu Notification
-        uses: yanglbme/feishu-notify@v3.1.0  # 使用确切版本号
+        uses: junka/feishu-bot-webhook-action@main
         with:
-          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          title: "搜索爬虫 - ${{ job.status }}"
-          content: |
-            **状态**: ${{ job.status }}
-            **仓库**: ${{ github.repository }}
-            **触发工作流**: ${{ github.event.workflow_run.name }}
-            **触发者**: ${{ github.event.workflow_run.actor.login }}
-            
-            [查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          message: |
+            {
+              "msg_type": "post",
+              "content": {
+                "post": {
+                  "zh_cn": {
+                    "title": "构建部署 - ${{ job.status }}",
+                    "content": [
+                      [
+                        {
+                          "tag": "text",
+                          "text": "**状态**: ${{ job.status }}\n**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}\n\n"
+                        }
+                      ],
+                      [
+                        {
+                          "tag": "a",
+                          "text": "查看详情",
+                          "href": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                        }
+                      ]
+                    ]
+                  }
+                }
+              }
+            }
         if: always()

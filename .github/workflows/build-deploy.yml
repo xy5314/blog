@@ -42,27 +42,34 @@ jobs:
           REMOTE_USER: 'root'
           TARGET: '/usr/local/dockers/nginx/html/mdtest/'
 
-      - name: Create deployment artifact
-        if: success()
-        run: echo "Build and deploy successful at $(date)" > deploy_success.txt
-
-      - name: Upload deployment artifact
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: deploy-success
-          path: deploy_success.txt
-
       - name: Send Feishu Notification
-        uses: yanglbme/feishu-notify@v3.1.0  # 使用确切版本号
+        uses: junka/feishu-bot-webhook-action@main
         with:
-          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          title: "构建部署 - ${{ job.status }}"
-          content: |
-            **状态**: ${{ job.status }}
-            **仓库**: ${{ github.repository }}
-            **分支**: ${{ github.ref }}
-            **触发者**: ${{ github.actor }}
-            
-            [查看详情](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          message: |
+            {
+              "msg_type": "post",
+              "content": {
+                "post": {
+                  "zh_cn": {
+                    "title": "构建部署 - ${{ job.status }}",
+                    "content": [
+                      [
+                        {
+                          "tag": "text",
+                          "text": "**状态**: ${{ job.status }}\n**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}\n\n"
+                        }
+                      ],
+                      [
+                        {
+                          "tag": "a",
+                          "text": "查看详情",
+                          "href": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                        }
+                      ]
+                    ]
+                  }
+                }
+              }
+            }
         if: always()
