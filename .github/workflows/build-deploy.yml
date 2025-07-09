@@ -55,13 +55,13 @@ jobs:
                 content:
                 - - tag: text
                     un_escape: true
-                    text: "**状态**: ${{ job.status }}\n"
+                    text: "状态: ${{ job.status }}\n"
                 - - tag: text
-                    text: "**仓库**: ${{ github.repository }}\n"
+                    text: "仓库: ${{ github.repository }}\n"
                 - - tag: text
-                    text: "**分支**: ${{ github.ref }}\n"
+                    text: "分支: ${{ github.ref }}\n"
                 - - tag: text
-                    text: "**触发者**: ${{ github.actor }}\n\n"
+                    text: "触发者: ${{ github.actor }}\n\n"
                 - - tag: a
                     text: "查看详情"
                     href: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
