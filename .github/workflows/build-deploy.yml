@@ -43,35 +43,13 @@ jobs:
           TARGET: '/usr/local/dockers/nginx/html/mdtest/'
 
       - name: Sending Feishu Message
-        uses: x-actions/feishu@main
-        env:
-          FEISHU_CUSTOMERBOT_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          MSGTYPE: interactive
-          TITLE: "x-actions feishu message"
-          CONTENT: |
-            {
-              "msg_type": "post",
-              "content": {
-                "post": {
-                  "zh_cn": {
-                    "title": "构建部署 - ${{ job.status }}",
-                    "content": [
-                      [
-                        {
-                          "tag": "text",
-                          "text": "**状态**: ${{ job.status }}\n**仓库**: ${{ github.repository }}\n**分支**: ${{ github.ref }}\n**触发者**: ${{ github.actor }}\n\n"
-                        }
-                      ],
-                      [
-                        {
-                          "tag": "a",
-                          "text": "查看详情",
-                          "href": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                        }
-                      ]
-                    ]
-                  }
-                }
-              }
-            }
-        if: always()
+        uses: whatwewant/action-robot-feishu@v0.0.1
+        with:
+          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          title: notice
+          text: |
+            博客部署 - ${{ job.status }}
+            repository: ${{ github.repository }}
+            committer: ${{ github.actor }}
+            compare: ${{ github.event.compare }}
+            job status: ${{ job.status }}
