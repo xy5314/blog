@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [20]
+        node: [ 20 ]
 
     steps:
       - uses: actions/checkout@v4
@@ -43,13 +43,49 @@ jobs:
           TARGET: '/usr/local/dockers/nginx/html/mdtest/'
 
       - name: Sending Feishu Message
-        uses: whatwewant/action-robot-feishu@v0.0.1
+        if: always()  # 修正：将 if 条件移到步骤级别
+        uses: xavier/feishu-message-action@v1
         with:
-          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          title: notice
-          text: |
-            博客部署 - ${{ job.status }}
-            repository: ${{ github.repository }}
-            committer: ${{ github.actor }}
-            compare: ${{ github.event.compare }}
-            job status: ${{ job.status }}
+          webhook: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          type: post
+          message: |
+            {
+              "post": {
+                "zh_cn": {
+                  "title": "博客项目部署结果",
+                  "content": [
+                    [
+                      {
+                        "tag": "text",
+                        "text": "**状态**: ${{ job.status }}\n"
+                      }
+                    ],
+                    [
+                      {
+                        "tag": "text",
+                        "text": "**仓库**: ${{ github.repository }}\n"
+                      }
+                    ],
+                    [
+                      {
+                        "tag": "text",
+                        "text": "**分支**: ${{ github.ref }}\n"
+                      }
+                    ],
+                    [
+                      {
+                        "tag": "text",
+                        "text": "**触发者**: ${{ github.actor }}\n\n"
+                      }
+                    ],
+                    [
+                      {
+                        "tag": "a",
+                        "text": "查看详情",
+                        "href": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }  
