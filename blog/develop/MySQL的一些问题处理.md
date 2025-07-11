@@ -4,6 +4,7 @@ title: mysql的问题归纳
 date: 2025-06-08
 authors: silence
 tags: [mysql]
+image: https://gitee.com/qixiangyang/pictures/raw/master/images/2025/07/20250711180427031.png
 keywords: [mysql]
 description: mysql的问题归纳
 sticky: 999

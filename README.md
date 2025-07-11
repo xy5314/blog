@@ -66,7 +66,7 @@ Silence的个人博客
 
 ## 📥 运行
 
-```bash
+```bash title="gitclone"
 git clone https://github.com/xy5314/blog.git
 cd blog
 pnpm install

@@ -6,7 +6,7 @@ authors: silence
 tags: [git]
 keywords: [git]
 description: git文档
-image: /img/blog/k8s.png
+image: https://gitee.com/qixiangyang/pictures/raw/master/images/2025/07/20250710112844130.png
 sticky: 999
 # 草稿 写了就不会部署
 # draft: true 

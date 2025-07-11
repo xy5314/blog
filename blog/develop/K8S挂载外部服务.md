@@ -6,7 +6,7 @@ authors: silence
 tags: [部署, k8s]
 keywords: [部署, k8s]
 description: k8s挂载外部服务
-image: /img/blog/k8s.png
+image: https://gitee.com/qixiangyang/pictures/raw/master/images/2025/07/20250711180315281.png
 sticky: 999
 # 草稿 写了就不会部署
 # draft: true 
