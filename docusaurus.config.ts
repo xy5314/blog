@@ -279,6 +279,10 @@ const config: Config = {
         locales: ['zh-CN'],
     },
     onBrokenLinks: 'warn',
+    future: {
+        v4: true,
+        experimental_faster: true,
+    },
 }
 
 export default config
