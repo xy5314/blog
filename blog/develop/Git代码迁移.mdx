@@ -1,0 +1,65 @@
+---
+slug: git-change
+title: git文档
+date: 2025-03-08
+authors: silence
+tags: [git]
+keywords: [git]
+description: git文档
+image: https://gitee.com/qixiangyang/pictures/raw/master/images/2025/07/20250710112844130.png
+sticky: 999
+# 草稿 写了就不会部署
+# draft: true 
+---
+git代码迁移
+
+ <!-- truncate --> 
+
+
+## 代码更换到gitlab
+
+```shell
+# --mirror 会推送 所有分支、标签、引用，完全复制源仓库。
+git clone --mirror git@github.com:user/source-repo.git
+
+cd source-repo.git
+
+git push --mirror <目标仓库URL>
+
+```
+
+## 代码多标签使用
+
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+
+<Tabs>
+<TabItem value="js" label="JavaScript">
+
+```js
+function helloWorld() {
+  console.log('Hello, world!');
+}
+```
+
+</TabItem>
+<TabItem value="py" label="Python">
+
+```py
+def hello_world():
+  print("Hello, world!")
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+class HelloWorld {
+  public static void main(String args[]) {
+    System.out.println("Hello, World");
+  }
+}
+```
+
+</TabItem>
+</Tabs>
