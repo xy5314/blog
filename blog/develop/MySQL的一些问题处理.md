@@ -30,4 +30,12 @@ SELECT NOW();
 SET GLOBAL time_zone = '+08:00';
 SET time_zone = '+08:00';
 
+
+# 解决 SQLSTATE[HY000] [2054] 认证方法未知错误
+# 方案1：修改用户认证方式（推荐）
+SELECT  * from mysql.user
+ALTER USER 'your_username'@'host' IDENTIFIED WITH mysql_native_password BY 'your_password';
+FLUSH PRIVILEGES;
+
+将 your_username、host 和 your_password 替换为实际值
 ```
