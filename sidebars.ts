@@ -15,6 +15,8 @@ const sidebars: SidebarsConfig = {
                 'linux/k8s/k8s-cluster-deploy',
                 'linux/k8s/k8s-kubeSphere-install',
                 'linux/k8s/k8s-kubeSphere-use',
+                'linux/k8s/k8s-kubeSphere-outside',
+                'linux/k8s/k8s-cert-manager',
             ],
         },
         {

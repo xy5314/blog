@@ -1,8 +1,8 @@
-import type * as Preset from '@docusaurus/preset-classic'
-import type { Config } from '@docusaurus/types'
-import { themes } from 'prism-react-renderer'
-import social from './data/social'
-import {GiscusConfig} from "@site/src/components/Comment";
+import type * as Preset from '@docusaurus/preset-classic';
+import type { Config } from '@docusaurus/types';
+import { GiscusConfig } from "@site/src/components/Comment";
+import { themes } from 'prism-react-renderer';
+import social from './data/social';
 
 
 const config: Config = {
@@ -93,6 +93,7 @@ const config: Config = {
                     items: [
                         {label: '关于我', to: '/about'},
                         {label: 'GitHub', href: social.github.href},
+                        {label: 'Docusaurus', href: "https://docusaurus.nodejs.cn/"},
                     ],
                 },
             ]
