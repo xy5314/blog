@@ -159,6 +159,13 @@ const config: Config = {
                 content: 'no-referrer',
             },
         },
+               {
+            tagName: 'meta',
+            attributes: {
+                name: 'baidu-site-verification',
+                content: 'no-codeva-a5ocSDmiGt',
+            },
+        },
     ],
     presets: [
         [
