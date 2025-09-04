@@ -38,10 +38,12 @@ adb install <软件路径>
 adb uninstall <软件包名>
 # 查看手机上所有安装的软件包名
 adb shell pm list packages
+
+#从手机上传输文件到电脑上
+adb push <手机文件/目录> <电脑文件/目录>
+adb push /storage/emulated/0/Android/data/top.niunaijun.blackdexa64/dump/cc.angis.hn /Users/edy/Desktop
+
 ```
-
-
-
 
 
 
@@ -51,7 +53,5 @@ adb shell pm list packages
 # https://www.bilibili.com/video/BV1er4y1C7wU/
 fastboot flash boot D:\Soft\miui-flush\adb-fastboot\magisk_patched-29000_u39hS.img
 ```
-
-
 
 ![](https://gitee.com/qixiangyang/pictures/raw/master/images/2025/08/20250830154240893.png)

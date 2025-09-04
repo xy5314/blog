@@ -17,6 +17,7 @@ const sidebars: SidebarsConfig = {
                 'linux/k8s/k8s-kubeSphere-use',
                 'linux/k8s/k8s-kubeSphere-outside',
                 'linux/k8s/k8s-cert-manager',
+                'linux/k8s/k8s-kubeSphere-ingress',
             ],
         },
         {
