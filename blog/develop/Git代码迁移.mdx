@@ -9,11 +9,11 @@ description: git文档
 image: https://gitee.com/qixiangyang/pictures/raw/master/images/2025/07/20250710112844130.png
 sticky: 999
 # 草稿 写了就不会部署
-# draft: true 
+# draft: true
 ---
 git代码迁移
 
- <!-- truncate --> 
+ <!-- truncate -->
 
 
 ## 代码更换到gitlab
@@ -27,6 +27,37 @@ cd source-repo.git
 git push --mirror <目标仓库URL>
 
 ```
+
+
+## git 修改.gitignore后生效
+```shell
+git rm -r --cached .  #清除缓存
+git rm -rf --cached .  #强制清除缓存
+git add . #重新trace file
+git commit -m "update .gitignore" #提交和注释
+git push origin master #可选，如果需要同步到remote上的话
+```
+
+
+## git 清理大文件
+```shell
+# 罗列出前十个占用最大空间的文件
+git rev-list --all | xargs -rL1 git ls-tree -r --long | sort -uk3 | sort -rnk4 |        head -10
+
+
+# target/procurement-0.0.1-SNAPSHOT.jar.original 是具体的文件名
+git filter-branch --force --index-filter 'git rm -r --cached --ignore-unmatch target/procurement-0.0.1-SNAPSHOT.jar.original' --prune-empty --tag-name-filter cat -- --all
+
+# 如果遇到“Cannot rewrite branches: You have unstaged changes”这样的bug
+# 先暂存一下未提交的代码
+git stash
+# 或者先提交一版本
+git push
+# 强制推送
+git push origin --force --all
+```
+
+
 
 ## 代码多标签使用
 
