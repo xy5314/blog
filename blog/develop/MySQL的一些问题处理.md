@@ -17,7 +17,7 @@ mysql的一些问题
 
 # 1.Mysql Too ManyConnect
 https://www.cnblogs.com/q202105271618/p/16212647.html
-```mysql
+```mysql  showLineNumbers
 SHOW GLOBAL STATUS LIKE 'Max_used_connections';
 SHOW VARIABLES LIKE '%max_connections%';
         

@@ -18,7 +18,7 @@ k8s挂载外部服务
 # k8s挂载外部应用
 
 ## MYSQL
-```yaml title="mysql.yaml" 
+```yaml  showLineNumbers title="mysql.yaml" 
 apiVersion: v1
 kind: Service
 metadata:
@@ -51,7 +51,7 @@ subsets:
 
 ## MQ
 
-```yaml
+```yaml  showLineNumbers
 apiVersion: v1
 kind: Service
 metadata:
@@ -92,7 +92,7 @@ subsets:
 
 ## MINIO
 
-```yaml
+```yaml  showLineNumbers
 apiVersion: v1
 kind: Service
 metadata:

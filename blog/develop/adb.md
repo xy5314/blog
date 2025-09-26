@@ -18,7 +18,7 @@ adb命令
 
 adb常用命令
 
-```shell
+```shell showLineNumbers
 # 查看版本
 adb version 
 # 查看设备列表
@@ -48,7 +48,7 @@ adb push /storage/emulated/0/Android/data/top.niunaijun.blackdexa64/dump/cc.angi
 
 
 
-```shell
+```shell showLineNumbers
 # 刷入面具
 # https://www.bilibili.com/video/BV1er4y1C7wU/
 fastboot flash boot D:\Soft\miui-flush\adb-fastboot\magisk_patched-29000_u39hS.img

@@ -18,7 +18,7 @@ git代码迁移
 
 ## 代码更换到gitlab
 
-```shell
+```shell showLineNumbers
 # --mirror 会推送 所有分支、标签、引用，完全复制源仓库。
 git clone --mirror git@github.com:user/source-repo.git
 
@@ -30,7 +30,7 @@ git push --mirror <目标仓库URL>
 
 
 ## git 修改.gitignore后生效
-```shell
+```shell showLineNumbers
 git rm -r --cached .  #清除缓存
 git rm -rf --cached .  #强制清除缓存
 git add . #重新trace file
@@ -40,7 +40,7 @@ git push origin master #可选，如果需要同步到remote上的话
 
 
 ## git 清理大文件
-```shell
+```shell showLineNumbers
 # 罗列出前十个占用最大空间的文件
 git rev-list --all | xargs -rL1 git ls-tree -r --long | sort -uk3 | sort -rnk4 |        head -10
 
@@ -67,7 +67,7 @@ import Tabs from '@theme/Tabs';
 <Tabs>
 <TabItem value="js" label="JavaScript">
 
-```js
+```js showLineNumbers
 function helloWorld() {
   console.log('Hello, world!');
 }
@@ -76,7 +76,7 @@ function helloWorld() {
 </TabItem>
 <TabItem value="py" label="Python">
 
-```py
+```py showLineNumbers
 def hello_world():
   print("Hello, world!")
 ```
@@ -84,7 +84,7 @@ def hello_world():
 </TabItem>
 <TabItem value="java" label="Java">
 
-```java
+```java showLineNumbers
 class HelloWorld {
   public static void main(String args[]) {
     System.out.println("Hello, World");

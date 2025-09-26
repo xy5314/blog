@@ -36,7 +36,7 @@ Silence的个人博客
 
 ## 📊 目录结构
 
-```bash
+```bash showLineNumbers
 ├── blog                           # 博客
 │   ├── first-blog.md
 ├── docs                           # 文档/笔记
@@ -66,7 +66,7 @@ Silence的个人博客
 
 ## 📥 运行
 
-```bash title="gitclone"
+```bash showLineNumbers title="gitclone"
 git clone https://github.com/xy5314/blog.git
 cd blog
 pnpm install
@@ -75,6 +75,6 @@ pnpm start
 
 构建
 
-```bash
+```bash showLineNumbers
 pnpm build
 ```

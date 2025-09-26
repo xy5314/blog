@@ -1,4 +1,5 @@
 ---
+sidebar_position: 1
 id: index
 slug: /linux
 title: 运维相关知识
