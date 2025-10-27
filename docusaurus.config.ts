@@ -93,7 +93,13 @@ const config: Config = {
                     items: [
                         {label: '关于我', to: '/about'},
                         {label: 'GitHub', href: social.github.href},
-                        {label: 'Docusaurus', href: "https://docusaurus.nodejs.cn/"},
+                        {
+              html: `
+                <a href="https://docusaurus.io" target="_blank" rel="noreferrer noopener">
+                  <img src="/img/buildwith.png" alt="build with docusaurus" width="120" height="50"/>
+                </a>
+                `,
+            },
                     ],
                 },
             ]
